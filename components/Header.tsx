@@ -34,10 +34,22 @@ export const Header: React.FC<HeaderProps> = ({
     setTempSymbol(symbol);
   }, [symbol]);
 
+  const submitSymbol = () => {
+    const trimmed = tempSymbol.trim();
+    if (trimmed && trimmed.toUpperCase() !== symbol) {
+      setSymbol(trimmed.toUpperCase());
+    }
+  };
+
   const handleSymbolSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (tempSymbol.trim()) {
-        setSymbol(tempSymbol.toUpperCase());
+    submitSymbol();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitSymbol();
     }
   };
 
@@ -65,6 +77,7 @@ export const Header: React.FC<HeaderProps> = ({
                 type="text" 
                 value={tempSymbol}
                 onChange={(e) => setTempSymbol(e.target.value)}
+                onKeyDown={handleKeyDown}
                 className="w-full sm:w-40 bg-gray-900 border border-gray-700 text-white text-sm rounded pl-10 pr-3 py-1.5 focus:border-crypto-accent focus:ring-1 focus:ring-crypto-accent outline-none font-mono uppercase transition-all"
                 placeholder="BTCUSDT"
             />
